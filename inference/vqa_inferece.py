@@ -6,6 +6,11 @@ Paste your own case (images + question) into `messages` below, then run:
 
     python inference/inference.py
 """
+import sys
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT))
 
 import torch
 
@@ -14,7 +19,7 @@ from src.model.processing_qwen2_5_vl_ctvit import Qwen2_5_VLProcessor
 from src.dataset.vision_process_vit import process_vision_info
 
 
-MODEL_PATH = '/mnt/petrelfs/zhangtengfei/public_dataset/Diff_dataset/pubilc_diff_dataset/our_527/qwen_result',   # TODO: model weights path
+MODEL_PATH = '/mnt/petrelfs/zhangtengfei/public_dataset/Diff_dataset/pubilc_diff_dataset/our_527/qwen_result'   # TODO: model weights path
 PROCESSOR_PATH = "configs"
 
 
@@ -24,7 +29,7 @@ messages = [
         "role": "user",
         "content": [
             {"type": "image", "image": "inference/examples/vqa_image1.jpg"},
-            {"type": "image", "image": "inference/examples/vqa_iamge2.jpg"},
+            {"type": "image", "image": "inference/examples/vqa_image2.jpg"},
             {"type": "text", "text": "Comparing the two cases, how does the endotracheal tube tip's position relative to the carina differ between Case A and Case B?"},   # TODO: paste the question here
         ],
     }
@@ -64,7 +69,7 @@ def main():
         out_ids[len(in_ids):]
         for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
     ]
-    output_text = processor.batch_decode(
+    output_text = processor.tokenizer.batch_decode(
         generated_ids_trimmed,
         skip_special_tokens=True,
         clean_up_tokenization_spaces=False,

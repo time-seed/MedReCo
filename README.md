@@ -1,30 +1,46 @@
-# 🩺 MedReCo / MedReCo-VLM
+# MedReCo / MedReCo-VLM
 
-> Official implementation of **MedReCo** and **MedReCo-VLM** — a vision-language framework for **comparative reasoning in radiology**.
+<p align="center">
+  <b>A Vision–language Framework for Comparative Reasoning in Radiology</b>
+</p>
 
-**MedReCo** supports entity-aware medical image retrieval, while **MedReCo-VLM** extends it to comparative visual question answering across medical images.
+<p align="center">
+  <a href="https://arxiv.org/abs/2606.06407"><img src="https://img.shields.io/badge/arXiv-2606.06407-b31b1b.svg" alt="arXiv"></a>
+  <a href="https://huggingface.co/timeseed/MedReCoVLM"><img src="https://img.shields.io/badge/🤗%20HuggingFace-Weights-ffd21e.svg" alt="HuggingFace"></a>
+  <a href="https://github.com/time-seed/MedReCo"><img src="https://img.shields.io/badge/GitHub-Code-181717.svg?logo=github" alt="GitHub"></a>
+</p>
 
----
-
-## 📖 Overview
-
-Radiological diagnosis often relies on comparing a current study with prior exams or clinically similar reference cases. MedReCo is purpose-built for this setting and supports:
-
-* 🔍 **Controllable Medical Image Retrieval** — retrieve clinically analogous cases conditioned on anatomical structures, abnormal findings, or pathological conditions.
-* 🎯 **Reranking** — refine coarse retrieval results with token-level query–candidate comparison.
-* 💬 **Comparative VQA** — answer questions that compare two medical images.
-
-🤗 **Pretrained weights** are available on Hugging Face:
-
-```text
-https://huggingface.co/timeseed/MedReCoVLM
-```
-
-> ⚠️ **Note:** This release currently provides **train code**, **inference code** and **complete pretrained weights**. Full training and evaluation scripts will be released together with the organized dataset.
+Official implementation of **MedReCo** and **MedReCo-VLM**.
 
 ---
 
-## ⚙️ Installation
+## Overview
+
+Radiologists rarely read an image in isolation. In routine practice, a diagnosis is reached by **comparison** — against a patient's prior studies to judge how a finding has changed, and against analogous reference cases to tell visually confusable entities apart. Most medical imaging AI, however, still follows a *single-image* paradigm and lacks explicit supervision for cross-image comparison.
+
+MedReCo addresses this gap by formulating radiological comparison as an **entity-aware, cross-image reasoning problem**. The key idea is a **shared visual representation conditioned on clinical entities** — anatomical structures, abnormal findings and pathological conditions — so that two images can be compared *with respect to a specified entity* rather than only by global visual appearance. This single representation powers two complementary models:
+
+* **MedReCo** — an entity-aware visual encoder for **controllable medical image retrieval**. Given a query image and a target entity, it ranks candidate cases by entity-specific similarity to retrieve clinically analogous references, supporting differential diagnosis (*reference comparison*). A lightweight token-level reranker refines the top candidates.
+* **MedReCo-VLM** — a vision–language extension that connects the pretrained visual encoder to an LLM via instruction tuning, generating **natural-language comparative interpretations** of similarities, differences and interval changes between an image pair (*temporal / comparative comparison*).
+
+Both models operate across four modality families:
+
+| Modality | Description |
+| :--- | :--- |
+| `2D-CXR` | 2D Chest X-Ray |
+| `3D-CT` | 3D Computed Tomography |
+| `3D-Brain-MRI` | 3D Brain MRI |
+| `2D-Ultrasound` | 2D Ultrasound |
+
+The models are trained on **MedReCo-DB**, a large-scale comparative imaging resource derived from routine image–report pairs: **690,000+ images** from **160,000+ patients** across **8 institutions, 4 countries and 7 imaging modalities**. Reports are decomposed into structured entities — **42 anatomical structures, 69 abnormal findings and 28 pathological conditions** — providing scalable supervision for both entity-conditioned retrieval and comparative VQA.
+
+<p align="center">
+  <img src="Fig.pdf" width="900" alt="MedReCo overview">
+</p>
+
+---
+
+## Installation
 
 ```bash
 conda create -n MedReCo python=3.11.12
@@ -42,7 +58,113 @@ cd ..
 
 ---
 
-## 📂 Repository Structure
+## Data and Weights Preparation
+
+**Weights.** Pretrained weights are available on Hugging Face: 🤗 [timeseed/MedReCoVLM](https://huggingface.co/timeseed/MedReCoVLM). After downloading, update the checkpoint paths in the inference scripts.
+
+**Data.** All public datasets used in this study should be obtained from their original providers, in accordance with the corresponding licenses and data-use agreements. Derived annotations and benchmark splits will be released together with the organized dataset (see [TODO](#todo)).
+
+---
+
+## Quick Start
+
+### Retrieval Inference
+
+`inference/retrieval_inference.py` runs **pure image-to-image (i2i)** retrieval (no text involved):
+
+1. **Coarse embedding** — one L2-normalized 512-d embedding per image
+2. **Reranking** — token-level query–candidate comparison
+3. **Score fusion** — `Score = alpha * cosine + (1 - alpha) * rerank_prob`
+
+Configure the checkpoint and demo manifest at the top of the script:
+
+```python
+CHECKPOINT           = "checkpoints/MedReCoVLM/.pt"
+TEXT_ENCODER_NAME    = "FremyCompany/BioLORD-2023"
+CONDITION_INDEX_JSON = "configs/all_condition_index.json"
+DEMO_MANIFEST        = "inference/examples/demo_cases.json"
+ALPHA                = 0.7   # coarse / rerank fusion weight
+```
+
+In the manifest, the first case is the **query** and the rest are **candidates** (at least 2); `modality` and `condition` are shared across all cases:
+
+```json
+{
+  "modality": "2D-CXR",
+  "dataset_key": "MIMIC-CXR",
+  "condition": "Pulmonary Parenchyma",
+  "cases": [
+    {"id": "query_case_id",       "image": "inference/examples/query.jpg"},
+    {"id": "candidate_case_id_1", "image": "inference/examples/candidate_1.jpg"},
+    {"id": "candidate_case_id_2", "image": "inference/examples/candidate_2.jpg"}
+  ]
+}
+```
+
+Run:
+
+```bash
+mkdir -p inference/outputs
+python inference/retrieval_inference.py
+```
+
+This saves one normalized 512-d embedding per image to `inference/outputs/embedding_{i}.npy`, and prints the rerank scores and final ranking of the candidates:
+
+```text
+Output 2 | Rerank  (Score = 0.7*cosine + 0.3*rerank), query = query.jpg
+  Candidate          |   CosSim |  RerankP |    Final
+  --------------------------------------------------
+  candidate_1.jpg    |   0.8239 |   0.7764 |   0.8096
+  candidate_2.jpg    |   0.5788 |   0.5239 |   0.5624
+
+  Final order (high -> low): candidate_1.jpg > candidate_2.jpg
+```
+
+### Comparative VQA Inference
+
+`inference/vqa_inferece.py` takes two medical images and a comparison question, and generates a natural-language answer. Configure the paths:
+
+```python
+MODEL_PATH     = "checkpoints/MedReCoVLM/<vqa_model_dir>"
+PROCESSOR_PATH = "configs"
+```
+
+Example input:
+
+```python
+messages = [
+    {
+        "role": "user",
+        "content": [
+            {"type": "image", "image": "inference/examples/vqa_image1.jpg"},
+            {"type": "image", "image": "inference/examples/vqa_image2.jpg"},
+            {"type": "text",  "text": "Comparing the two cases, how does the endotracheal tube tip's position relative to the carina differ between Case A and Case B?"}
+        ]
+    }
+]
+```
+
+Run:
+
+```bash
+python inference/vqa_inferece.py
+```
+
+Example output:
+
+```text
+The image from Case A shows the endotracheal tube tip positioned below the
+carina, while the image from Case B demonstrates the tip positioned above
+the carina.
+```
+
+---
+
+## Training and Evaluation
+
+The repository contains the MedReCo-VLM model definitions, dataset utilities, trainer code, and retrieval training/evaluation utilities under `src/` and `scripts/`. The complete, reproducible training and evaluation scripts will be released after the dataset is organized and uploaded.
+
+### Repository Structure
 
 ```text
 MedReVLM/
@@ -61,131 +183,27 @@ MedReVLM/
 
 ---
 
-## ⬇️ Download Weights
+## TODO
 
-```bash
-pip install -U huggingface_hub
-
-huggingface-cli download timeseed/MedReCoVLM \
-  --local-dir checkpoints/MedReCoVLM \
-  --local-dir-use-symlinks False
-```
-
-> 💡 After downloading, remember to update the checkpoint paths in the inference scripts.
+- [x] Release inference code
+- [x] Release complete pretrained weights
+- [x] Release train code
+- [ ] Release full training and evaluation scripts (together with the organized dataset)
 
 ---
 
-## 🔍 Retrieval Inference
-
-`inference/retrieval_inference.py` performs:
-
-1. **Coarse embedding generation**
-2. **Candidate reranking**
-3. **Final score fusion**
-4. **Saving normalized embeddings** as `.npy` files
-
-### 🛠️ Configuration
-
-Edit the configuration block:
-
-```python
-CHECKPOINT = "checkpoints/MedReCoVLM/<retrieval_checkpoint>.pt"
-TEXT_ENCODER_NAME = "FremyCompany/BioLORD-2023"
-CONDITION_INDEX_JSON = "configs/all_condition_index.json"
-DEMO_MANIFEST = "inference/examples/demo_cases.json"
-ALPHA = 0.7
-```
-
-### 📄 Example Manifest
-
-```json
-{
-  "modality": "2D-CXR",
-  "dataset_key": "MIMIC-CXR",
-  "condition": "Pulmonary Parenchyma",
-  "cases": [
-    {"id": "query_case_id", "image": "inference/examples/query.jpg"},
-    {"id": "candidate_case_id_1", "image": "inference/examples/candidate_1.jpg"},
-    {"id": "candidate_case_id_2", "image": "inference/examples/candidate_2.jpg"}
-  ]
-}
-```
-
-### ▶️ Run
-
-Run from the repository root:
-
-```bash
-mkdir -p inference/outputs
-python inference/retrieval_inference.py
-```
-
-### 🧬 Supported Modalities
-
-| Modality | Description |
-| :--- | :--- |
-| `2D-CXR` | 2D Chest X-Ray |
-| `3D-CT` | 3D Computed Tomography |
-| `3D-Brain-MRI` | 3D Brain MRI |
-| `2D-Ultrasound` | 2D Ultrasound |
-
----
-
-## 💬 Comparative VQA Inference
-
-`inference/vqa_inferece.py` performs single-case comparative VQA.
-
-### 🛠️ Configuration
-
-```python
-MODEL_PATH = "checkpoints/MedReCoVLM/<vqa_model_dir>"
-PROCESSOR_PATH = "configs"
-```
-
-### 📄 Example Input
-
-```python
-messages = [
-    {
-        "role": "user",
-        "content": [
-            {"type": "image", "image": "inference/examples/vqa_image1.jpg"},
-            {"type": "image", "image": "inference/examples/vqa_image2.jpg"},
-            {
-                "type": "text",
-                "text": "Comparing the two cases, how does the endotracheal tube tip's position relative to the carina differ between Case A and Case B?"
-            }
-        ]
-    }
-]
-```
-
-### ▶️ Run
-
-```bash
-python inference/vqa_inferece.py
-```
-
----
-
-## 🚀 Training and Evaluation
-
-The repository contains model definitions, dataset utilities, trainer code, and training-related modules. The **complete reproducible training and evaluation scripts** will be released after the dataset is organized and uploaded. Stay tuned! 🔔
-
----
-
-## 🙏 Acknowledgements
+## Acknowledgements
 
 This codebase is built upon the following excellent projects:
 
-* 🔗 [2U1/Qwen-VL-Series-Finetune](https://github.com/2U1/Qwen-VL-Series-Finetune)
-* 🔗 [ibrahimethemhamamci/CT-CLIP](https://github.com/ibrahimethemhamamci/CT-CLIP)
+* [2U1/Qwen-VL-Series-Finetune](https://github.com/2U1/Qwen-VL-Series-Finetune)
+* [ibrahimethemhamamci/CT-CLIP](https://github.com/ibrahimethemhamamci/CT-CLIP)
 
 We sincerely thank the authors for their high-quality open-source work.
 
 ---
 
-## 📚 Citation
+## Citation
 
 If you find this work useful, please consider citing:
 
@@ -197,9 +215,3 @@ If you find this work useful, please consider citing:
   year={2026}
 }
 ```
-
----
-
-## ⚠️ Disclaimer
-
-This project is intended for **research use only** and is **not a medical device**.
