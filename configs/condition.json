@@ -1,0 +1,46 @@
+{
+    "2D-CXR":{
+        "ANATOMY":[
+            "Pulmonary Parenchyma","Bronchi (Lower Respiratory Tract)","Pulmonary Interstitium","Trachea_Tracheal Lumen","Cardiac Chambers","Cardiac Valves","Pulmonary Vasculature","Mediastinum","Pleura","Diaphragm","Stomach","Ribs","Sternum","Aorta"
+        ],
+        "ABNORMAL":[
+            "Diffusely distributed, multiple pulmonary nodules and masses (sarcoidosis, metastasis, pneumoconiosis) in Pulmonary Parenchyma","Bone deformity in Ribs","Interstitial fibrosis and thickening (e.g., reticular changes) in Pulmonary Interstitium","Cardiac wall hypertrophy (e.g., myocardial hypertrophy) in Cardiac Walls","Ground-glass opacity (e.g., slightly high-density shadow due to inflammation) in Pulmonary Parenchyma","Bone fracture in Ribs","Lung consolidation (e.g., high-density shadow due to inflammation) in Pulmonary Parenchyma","Pulmonary fibrosis in Pulmonary Parenchyma","Venous dilatation in Pulmonary Vasculature","Callus and post-fracture healing changes in Ribs","Bone deformity in Thoracic spine","Bone fracture in Thoracic spine","Soft tissue density lesions in the mediastinum (including mediastinal tumors) in Mediastinum","Arterial dilatation in Aorta","Mediastinal shift in Mediastinum","Solitary pulmonary nodule and mass (peripheral lung cancer, granuloma) in Pulmonary Parenchyma","Arterial dilatation in Pulmonary Vasculature","Cardiac chamber enlargement (atrial or ventricular enlargement) in Cardiac Chambers","Atelectasis in Pulmonary Parenchyma","Atherosclerotic plaque of the arterial wall in Aorta","Abnormal arterial course in Aorta","Bronchiectasis in Bronchi (Lower Respiratory Tract)","Lymph node enlargement in the mediastinum in Mediastinum","Pericardial effusion in Pericardium","Bone fracture in Sternum","Eventration of the diaphragm in Diaphragm","Hernia or abnormal course of the gastrointestinal tract in Stomach","Pleural thickening in Pleura","Pleural effusion (including localized effusion) in Pleura","Venous dilatation in Thoracic veins"
+        ],
+        "DISEASE":[
+            "Aortic aneurysm","Aortosclerosis","Aortic valve disease","Cardiomyopathy","Pulmonary hypertension","Pneumonia","Pulmonary tuberculosis","Pneumomediastinum","Skeletal deformities"
+        ]
+    },
+    "3D-CT":{
+        "ANATOMY":[
+            "Pleura","Mediastinum","Cardiac Chambers","Pericardium","Coronary Arteries","Pulmonary Parenchyma","Bronchi (Lower Respiratory Tract)","Pulmonary Interstitium","Breast Tissue","Chest Wall Soft Tissues","Thoracic Vertebrae","Thoracic Arteries","Liver_Hepatic Parenchyma","Esophagus","Adrenal Glands","Gallbladder Lumen","Gallbladder Morphology","Spleen_Splenic Parenchyma","Kidneys_Renal Parenchyma"
+        ],
+        "ABNORMAL":[ 
+            "Lymphadenopathy within the mediastinum in Mediastinum","Emphysema in Pulmonary Parenchyma","Solitary pulmonary nodule and mass (peripheral lung cancer, granuloma) in Pulmonary Parenchyma","Diffusely distributed, multiple pulmonary nodules and masses (sarcoidosis, metastasis, pneumoconiosis) in Pulmonary Parenchyma","Abnormal esophageal position in Esophagus","Pulmonary fibrosis in Pulmonary Parenchyma","Soft tissue density lesion of the pleura in Pleura","Arterial dilation in Thoracic Arteries","Arterial wall atherosclerotic plaque in Thoracic Arteries","Ground-glass opacity (e.g., slightly high-density shadow due to inflammation) in Pulmonary Parenchyma","Pleural thickening in Pleura","Pleural effusion (including loculated effusion) in Pleura","Renal calcification in Kidneys_Renal Parenchyma","Lung consolidation (e.g., high-density shadow due to inflammation) in Pulmonary Parenchyma","Pericardial effusion in Pericardium","Soft tissue density lesion within the mediastinum (including mediastinal tumors) in Mediastinum","Bone deformity in Thoracic Vertebrae","Decreased hepatic parenchymal density (e.g., fatty change) in Liver_Hepatic Parenchyma","Interstitial fibrosis and thickening (e.g., reticular changes) in Pulmonary Interstitium","Cystic lesion of the renal parenchyma in Kidneys_Renal Parenchyma","Atelectasis in Pulmonary Parenchyma","Abnormal hepatic parenchymal morphology (including contour, size, hepatic lobe ratio, width of hepatic fissures, etc.) in Liver_Hepatic Parenchyma"
+        ],
+        "DISEASE":[
+            "Pneumonia (e.g., viral pneumonia, bacterial pneumonia, mycoplasma pneumonia, etc.)","Chronic obstructive pulmonary disease_Emphysema","Pulmonary hypertension","Bronchitis","Interstitial lung disease","Coronary heart disease_Coronary atherosclerotic heart disease","Aortic aneurysm","Cholelithiasis","Hiatal hernia","Thoracic spondylosis"
+        ]
+    },
+    "3D-Brain-MRI":{
+        "ANATOMY":[
+            "Brain Parenchyma (including Cerebrum and Cerebellum)","Ventricles and Cisterns"
+        ],
+        "ABNORMAL":[
+            "Intraventricular and intracisternal hemorrhage in Ventricles and Cisterns","Other non-mass brain parenchymal lesions (such as mineral deposition due to metabolic encephalopathy) in Brain Parenchyma (including Cerebrum and Cerebellum)","Brain parenchymal hyperdense foci in Brain Parenchyma (including Cerebrum and Cerebellum)","Cerebral softening lesions in Brain Parenchyma (including Cerebrum and Cerebellum)","Cerebral infarction in Brain Parenchyma (including Cerebrum and Cerebellum)","Cerebral ischemic lesions in Brain Parenchyma (including Cerebrum and Cerebellum)","Intraventricular and intracisternal soft tissue density lesions in Ventricles and Cisterns","Brain parenchymal soft tissue density lesions in Brain Parenchyma (including Cerebrum and Cerebellum)","Brain parenchymal hemorrhage and contusion in Brain Parenchyma (including Cerebrum and Cerebellum)"
+        ],
+        "DISEASE":[
+            "Cerebrovascular malformations (e.g., cavernous hemangioma, arteriovenous malformation)","Intracranial infections (e.g., encephalitis, brain abscess)","Traumatic lesions (e.g., cerebral contusion, diffuse axonal injury)","Metastatic tumors (metastases)","Demyelinating diseases (e.g., multiple sclerosis)","Intracranial hemorrhage (e.g., subdural hematoma, intracerebral hematoma)","Cerebral small vessel disease (white matter demyelination)"
+        ]
+    },
+    "2D-Ultrasound":{
+        "ANATOMY":[
+            "Gallbladder","Breast tissue","Thyroid","Hepatic parenchyma","Axilla","Veins","Mammary ducts"
+        ],
+        "ABNORMAL":[
+            "Mammary duct ectasia in Mammary ducts","Increased hepatic parenchymal density (such as calcification, iron deposition) in Hepatic parenchyma","Decreased hepatic parenchymal density (such as fatty degeneration) in Hepatic parenchyma","Lymphadenopathy in Axilla","Breast soft tissue density lesions in Breast tissue","Breast cystic lesions in Breast tissue","Hepatic parenchymal morphological abnormalities (including contour, size, hepatic lobe ratio, hepatic fissure width, etc.) in Hepatic parenchyma","Thyroid soft tissue density lesions in Thyroid"
+        ],
+        "DISEASE":[
+            "Breast cancer","Mammary duct ectasia"
+        ]
+    }
+}

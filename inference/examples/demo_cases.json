@@ -1,0 +1,19 @@
+{
+  "modality": "2D-CXR",
+  "dataset_key": "MIMIC-CXR",
+  "condition": "Pulmonary Parenchyma",
+  "cases": [
+    {
+      "id": "/p10/p10046166/s50051329",
+      "image": "examples/query.jpg"
+    },
+    {
+      "id": "/p19/p19075045/s52521827",
+      "image": "examples/candidate_1.jpg"
+    },
+    {
+      "id": "/p13/p13881772/s50211839",
+      "image": "examples/candidate_2.jpg"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "/p14/p14851532/s57432047and/p14/p14387068/s53036982_Bronchi_(Lower_Respiratory_Tract)_Location_0",
+  "role": "user",
+  "content": [
+    {
+      "type": "image",
+      "image": "examples/case_A.jpg"
+    },
+    {
+      "type": "image",
+      "image": "examples/case_B.jpg"
+    },
+    {
+      "type": "text",
+      "text": "Comparing the two cases, how does the endotracheal tube tip's position relative to the carina differ between Case A and Case B?"
+    }
+  ]
+}
