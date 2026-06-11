@@ -20,7 +20,7 @@ Radiological diagnosis often relies on comparing a current study with prior exam
 https://huggingface.co/timeseed/MedReCoVLM
 ```
 
-> ⚠️ **Note:** This release currently provides **inference code** and **complete pretrained weights**. Full training and evaluation scripts will be released together with the organized dataset.
+> ⚠️ **Note:** This release currently provides **train code**, **inference code** and **complete pretrained weights**. Full training and evaluation scripts will be released together with the organized dataset.
 
 ---
 
@@ -51,8 +51,7 @@ MedReVLM/
 │   ├── examples/                 # Demo images and JSON manifests
 │   ├── retrieval_inference.py    # Coarse embedding + reranker inference
 │   ├── retrieval_eval_dataset.py # Image loading and preprocessing
-│   ├── vqa_inferece.py           # Comparative VQA inference
-│   └── find_demo.py              # Demo case preparation helper
+│   └── vqa_inferece.py           # Comparative VQA inference
 ├── src/                          # MedReCo-VLM model, dataset, trainer code
 ├── scripts/                      # Retrieval training/evaluation utilities
 ├── CT_CLIP/                      # CT-CLIP based retrieval components
