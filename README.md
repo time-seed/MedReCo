@@ -35,7 +35,7 @@ Both models operate across four modality families:
 The models are trained on **MedReCo-DB**, a large-scale comparative imaging resource derived from routine image–report pairs: **690,000+ images** from **160,000+ patients** across **8 institutions, 4 countries and 7 imaging modalities**. Reports are decomposed into structured entities — **42 anatomical structures, 69 abnormal findings and 28 pathological conditions** — providing scalable supervision for both entity-conditioned retrieval and comparative VQA.
 
 <p align="center">
-  <img src="Fig.pdf" width="900" alt="MedReCo overview">
+  <img src="Fig.jpg" width="900" alt="MedReCo overview">
 </p>
 
 ---
