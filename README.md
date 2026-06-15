@@ -4,11 +4,7 @@
   <b>A Vision–language Framework for Comparative Reasoning in Radiology</b>
 </p>
 
-<p align="center">
-  <a href="https://arxiv.org/abs/2606.06407"><img src="https://img.shields.io/badge/arXiv-2606.06407-b31b1b.svg" alt="arXiv"></a>
-  <a href="https://huggingface.co/timeseed/MedReCoVLM"><img src="https://img.shields.io/badge/🤗%20HuggingFace-Weights-ffd21e.svg" alt="HuggingFace"></a>
-  <a href="https://github.com/time-seed/MedReCo"><img src="https://img.shields.io/badge/GitHub-Code-181717.svg?logo=github" alt="GitHub"></a>
-</p>
+<p align="center"> <a href="https://arxiv.org/abs/2606.06407"><img src="https://img.shields.io/badge/arXiv-2606.06407-b31b1b.svg" alt="arXiv"></a> <a href="https://huggingface.co/timeseed/MedReCoVLM"><img src="https://img.shields.io/badge/🤗%20HuggingFace-Weights-ffd21e.svg" alt="HuggingFace Weights"></a> <a href="https://huggingface.co/datasets/timeseed/MedReCo-DB"><img src="https://img.shields.io/badge/🤗%20HuggingFace-Dataset-ffd21e.svg" alt="HuggingFace Dataset"></a> <a href="https://github.com/time-seed/MedReCo"><img src="https://img.shields.io/badge/GitHub-Code-181717.svg?logo=github" alt="GitHub"></a> </p>
 
 Official implementation of **MedReCo** and **MedReCo-VLM**.
 
@@ -188,8 +184,9 @@ MedReVLM/
 - [x] Release inference code
 - [x] Release complete pretrained weights
 - [x] Release train code
-- [ ] Release full training and evaluation scripts (together with the organized dataset)
-
+- [x] Release organized public MedReCo-DB annotations and benchmark files 
+- [ ] Release full public training and evaluation scripts 
+- [ ] Release additional test splits
 ---
 
 ## Acknowledgements
